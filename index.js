@@ -7,6 +7,7 @@ app.use(cors());
 app.use(express.json());
 
 const { MongoClient } = require("mongodb");
+// const { ObjectId } = require("bson");
 const uri =
   "mongodb+srv://myfirstdb:op1ssy00BqcAP6xv@cluster0.0mdbb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 const client = new MongoClient(uri, {
@@ -39,12 +40,21 @@ async function run() {
       console.log("added new user ", result);
       res.json(result);
     });
+    //UPDATE API
+    app.get("/users/:id", async (req, res) => {
+      const id = req.params.id;
+      // console.log(id);
+      const query = { _id: ObjectId(id) };
+      const result = await usersCollecion.findOne(query);
+      console.log(result);
+      res.send(result);
+    });
     //DELETE Api
     app.delete("/users/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
       const result = await usersCollecion.deleteOne(query);
-      console.log(result);
+      // console.log(result);
       res.send(result);
     });
 
